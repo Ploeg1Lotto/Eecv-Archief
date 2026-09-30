@@ -1,0 +1,146 @@
+{
+  "app_name": "Terminal Referentie",
+  "personality": "1 iOS-Native Clean",
+  "personality_one_liner": "A high-contrast, tactile, and highly legible business-professional tool built for industrial field reference.",
+  "color": {
+    "surface": "#FFFFFF",
+    "onSurface": "#18181B",
+    "surfaceSecondary": "#F4F4F5",
+    "onSurfaceSecondary": "#3F3F46",
+    "surfaceTertiary": "#E4E4E7",
+    "onSurfaceTertiary": "#52525B",
+    "surfaceInverse": "#18181B",
+    "onSurfaceInverse": "#FFFFFF",
+    "brand": "#EA580C",
+    "brandPrimary": "#EA580C",
+    "onBrandPrimary": "#FFFFFF",
+    "brandSecondary": "#C2410C",
+    "onBrandSecondary": "#FFFFFF",
+    "brandTertiary": "#FFEDD5",
+    "onBrandTertiary": "#9A3412",
+    "success": "#15803D",
+    "onSuccess": "#FFFFFF",
+    "warning": "#CA8A04",
+    "onWarning": "#FFFFFF",
+    "error": "#DC2626",
+    "onError": "#FFFFFF",
+    "info": "#3F3F46",
+    "onInfo": "#FFFFFF",
+    "border": "#E4E4E7",
+    "borderStrong": "#A1A1AA",
+    "divider": "#F4F4F5"
+  },
+  "typography": {
+    "displayFontFamily": "Plus Jakarta Sans",
+    "textFontFamily": "Plus Jakarta Sans",
+    "scale": {
+      "sm": 12,
+      "base": 14,
+      "lg": 16,
+      "xl": 20,
+      "2xl": 24
+    }
+  },
+  "spacing": {
+    "rule": "Generous vertical breathing room for readability in the field. Large 48pt tap targets for lists and buttons to accommodate gloved/busy hands.",
+    "xs": 4,
+    "sm": 8,
+    "md": 12,
+    "lg": 16,
+    "xl": 24,
+    "2xl": 32,
+    "3xl": 48
+  },
+  "radius_tokens": {
+    "sm": 6,
+    "md": 12,
+    "lg": 20,
+    "pill": 999
+  },
+  "shadow_tier": "1",
+  "navigation": "stack_only",
+  "icon_set": "Phosphor",
+  "glassmorphism": {
+    "enabled": "true",
+    "do's": [
+      "Use over hero images for back buttons",
+      "Use on sticky filter/segment bars when scrolling through location documentation"
+    ],
+    "dont's": [
+      "Do not use on generic list items or form inputs to maintain high-contrast readability"
+    ]
+  },
+  "platform_libraries": {
+    "glass": {
+      "ios": "expo-glass-effect",
+      "android": "expo-blur",
+      "low_end_android_fallback": "solid surfaceSecondary"
+    },
+    "image": "expo-image",
+    "blur": "expo-blur",
+    "bottom_sheet": "@gorhom/bottom-sheet",
+    "animation": "react-native-reanimated",
+    "gesture": "react-native-gesture-handler"
+  },
+  "screens": [
+    {
+      "name": "Home",
+      "purpose": "Provides a top-level entry point to the terminal zones (Zeekade, Middenveld, etc.), search, and the Plattegrond.",
+      "states": {
+        "loading": "Skeleton list items for zones.",
+        "empty": "N/A - Zones are static.",
+        "error": "Failed to load hierarchy."
+      },
+      "layout": "Hero image of the port terminal at the top with a gradient scrim and the app title. Below, a global Search bar. Then, a Miller-column style drill-down list (Stack navigation) for the root folders: Plattegrond, Zeekade, Middenveld, Binnenkade, D-banden, K-banden, TLS, Rijdend materieel. Each list item has a ChevronRight icon and a generous 56pt height."
+    },
+    {
+      "name": "Location Detail",
+      "purpose": "Displays reference documentation, photos, and PDFs for a specific location node, plus access to faults/checklists.",
+      "states": {
+        "loading": "Spinner centered.",
+        "empty": "Illustration of an empty folder. Text: 'Geen documentatie gevonden voor deze locatie.'",
+        "error": "Error message with retry button."
+      },
+      "layout": "Header with the location name (e.g., 'C11 en WC12'). Sticky segmented control underneath: [Informatie] [Storingen] [Checklists]. Informatie tab shows rich text, image thumbnails, and PDF row links. Storingen tab lists recorded faults. Checklists lists available checklists. A sticky floating action button (FAB) at the bottom to add a new Storing or Checklist."
+    },
+    {
+      "name": "Plattegrond Viewer",
+      "purpose": "A dedicated full-screen viewer for the terminal floorplan with pinch-to-zoom capabilities.",
+      "states": {
+        "loading": "Centered spinner over a dark background.",
+        "empty": "Upload prompt: 'Geen plattegrond geüpload. Tik om toe te voegen.'",
+        "error": "Failed to load image."
+      },
+      "layout": "Full-bleed image viewer. Glassmorphism back button floating at the top left (respecting safe area). If empty, shows a large upload dropzone."
+    },
+    {
+      "name": "Storing Toevoegen",
+      "purpose": "Form to register a new fault (Storing) for a location.",
+      "states": {
+        "loading": "Form disabled with a submit spinner.",
+        "empty": "N/A",
+        "error": "Validation error text below inputs."
+      },
+      "layout": "Standard iOS-native form. Single column. Label above input. Fields for Description, Photo upload (grid), and Status. Sticky primary CTA 'Opslaan' at the bottom inside KeyboardAvoidingView."
+    }
+  ],
+  "images": {
+    "home_hero": {
+      "url": "https://images.unsplash.com/photo-1670121180530-cfcba4438038?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzN8MHwxfHNlYXJjaHwxfHxwb3J0JTIwY29udGFpbmVyJTIwdGVybWluYWx8ZW58MHx8fHwxNzg1MzY2NzcxfDA&ixlib=rb-4.1.0&q=85",
+      "alt": "Cargo ship at a port terminal dock"
+    },
+    "plattegrond_placeholder": {
+      "url": "https://images.unsplash.com/photo-1721244654392-9c912a6eb236?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NjZ8MHwxfHNlYXJjaHwxfHxpbmR1c3RyaWFsJTIwYmx1ZXByaW50JTIwZmxvb3JwbGFufGVufDB8fHx8MTc4NTM2Njc3Mnww&ixlib=rb-4.1.0&q=85",
+      "alt": "Industrial blueprint floorplan"
+    }
+  },
+  "instructions_to_main_agent": [
+    "Follow '1 iOS-Native Clean' principles. Keep the UI extremely tactile and high-contrast, representing a 'zakelijk' (business) terminal tool.",
+    "BANNED COLORS STRICTLY ENFORCED: Do not use any blue, indigo, violet, purple, or navy. Use the designated Signal Orange (#EA580C) as the primary brand/action color against white/gray surfaces.",
+    "Navigation should use Stack navigation (drill-down list pattern). Do not use deep accordion trees on a single screen as it clutters mobile real estate. Clicking a folder (e.g., Zeekade) pushes a new screen with its sub-folders (A1, A4, etc.).",
+    "List items must be at least 56pt tall with 44pt+ touch targets to accommodate field workers.",
+    "In Location Detail, use a Segmented Control to switch between Informatie, Storingen, and Checklists. Keep the FAB sticky at the bottom for quick 'Add Fault' actions.",
+    "Apply a vertical gradient scrim (transparent to dark) over the home_hero image behind any overlaid text to guarantee contrast.",
+    "Ensure Dutch language is used everywhere as requested (Informatie, Storingen, Checklists, Opslaan, Plattegrond)."
+  ]
+}
