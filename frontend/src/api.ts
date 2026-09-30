@@ -879,6 +879,17 @@ export const api = {
                 caption: v.caption ?? "",
                 created_at: v.created_at,
               });
+            } else if (v.uri.startsWith("idb://")) {
+              const blob: Blob | null = await getImage(v.id);
+              if (blob) {
+                const data = await new Promise<string>((resolve, reject) => {
+                  const r = new FileReader();
+                  r.onloadend = () => resolve(r.result as string);
+                  r.onerror = () => reject(r.error);
+                  r.readAsDataURL(blob);
+                });
+                videos.push({ node_id: nodeId, id: v.id, data, caption: v.caption ?? "", created_at: v.created_at });
+              }
             } else if (v.uri.startsWith("file")) {
               const b64 = await FileSystem.readAsStringAsync(v.uri, {
                 encoding: FileSystem.EncodingType.Base64,

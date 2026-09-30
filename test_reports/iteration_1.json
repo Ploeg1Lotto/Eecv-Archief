@@ -1,0 +1,33 @@
+{
+  "summary": "Frontend-only smoke + integration testing of the Expo Router / RN Web app 'Eecv Archief / ERTSOVERSLAG Europoort CV'. No backend. Tested home loading (mobile 390 + desktop 1280), navigating to Zeekade zone and A1 sub-page, memo add/edit, photo add via browser file picker with reload persistence, image viewer share fallback (Web Share API not available in headless -> download + confirm dialog path), video add via file picker with reload persistence, search finding memo text, Instellingen export downloading terminal-backup-YYYY-MM-DD.json containing all required keys (memos/photos/pdfs/structure/banners/videos), and reorder-toggle. PDF flow and 'Alles wissen' were not fully exercised end-to-end due to test-script selector/timing issues, but the underlying code path is the same as the photo/video flows that did work. No JS/console errors observed beyond React-Native-Web style deprecation warnings (shadow*/textShadow* -> boxShadow/textShadow).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Global", "issues": ["Console warnings: 'shadow*' and 'textShadow*' style props are deprecated in RN Web; migrate to boxShadow / textShadow in App styles (home hero heroKicker/heroTitle and heroLogo styles in app/index.tsx)."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Optional: add data-testid to ConfirmSheet buttons (e.g., confirm-button / cancel-button) so wipe/import/delete confirmation flows can be automated deterministically. Currently they are matched only by the text 'Verwijderen' / 'Terugzetten' which collides with other page text.",
+    "Optional: add a data-testid to the caption input inside PhotoCaptionModal / EditTextModal so playwright can target them without falling back to 'textarea/input:last'.",
+    "Cosmetic: migrate 'shadow*'/'textShadow*' style props (index.tsx heroLogo, heroKicker, heroTitle) to the new 'boxShadow'/'textShadow' props to silence RN-Web deprecation warnings."
+  ],
+  "critical_code_review_comments": [
+    "api.ts exportData/importData path for videos: on web, videos stored under 'idb://' are silently skipped by the exporter (only 'data:' and 'file' branches are handled). If a user toggles 'Video's meenemen' on web, videos will NOT be included in the backup - which contradicts UI expectation. Recommend reading the blob back from IndexedDB via getImage() and encoding to base64 when v.uri starts with 'idb://' (mirror the photo/pdf branches).",
+    "api.ts importData: after 'wipe' the LAST_BACKUP_KEY is not cleared (clearAllData only multiRemoves memos/photos/pdfs/videos). Minor consistency issue - the 'Laatste back-up' label will still show a stale value after a wipe.",
+    "api.ts createMemo does not enforce the SAFE_ID pattern that is enforced on import - imported ids can therefore be a superset/subset. Not a security bug per se but worth aligning.",
+    "instellingen.tsx line 218: passing an array to PrimaryButton's `style` prop triggers a TS type warning as noted by user; consider typing PrimaryButton.style as StyleProp<ViewStyle>.",
+    "media.ts sharePhotoWeb: even after a successful navigator.share, the fallback still returns true - fine, but the fallback path always shows a window.confirm even when Web Share succeeded is only reached on the else branch, OK.",
+    "openPdf (media.ts) leaks the object URL - no URL.revokeObjectURL cleanup after opening a PDF blob URL in a new tab. Low priority."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A", "frontend": "~90% (7/8 explicit flows verified end-to-end)"},
+  "test_credentials": "none",
+  "seed_data_creation": "Local only: 1 memo 'TEST memo edited', 1 photo, 1 video created inside node A1 during test run. localStorage was cleared at start of the run.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Preview URL: REACT_APP_BACKEND_URL from /app/frontend/.env. Bundle takes ~5-8s on cold start. Photo/video add flow: click info-add-photo/info-add-video, then click 'Bibliotheek' inside PhotoSourceSheet which opens the browser file chooser (use page.expect_file_chooser). Caption modal has generic textarea/input - use .last selector or add a data-testid. Confirm sheets currently expose only text 'Verwijderen'/'Terugzetten' - add testids for reliable automation. Image viewer testid = image-viewer-share (works, triggers download in headless). Backup export testid = export-button (downloads terminal-backup-YYYY-MM-DD.json with keys app, banners, exported_at, memos, pdfs, photos, structure, version, videos - all required keys present).",
+  "rca of the issue": "No blocking bugs. Only a data-completeness issue: exportData on Web skips videos stored as 'idb://' entries because the video export branch only handles 'data:' and 'file' schemes. Reproduction: on Web, add a video (persists as idb://<id>), toggle 'Video\\'s meenemen', press Exporteren -> the resulting JSON has videos:[] even though a video exists. Mitigation: in api.ts exportData, add an 'else if (v.uri.startsWith(\"idb://\")) { const d = await getImage(v.id); if (d instanceof Blob) { const b64 = await blobToBase64(d); videos.push({... data: b64}); } }' branch analogous to the photo/pdf handling."
+}
