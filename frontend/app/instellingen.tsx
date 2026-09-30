@@ -18,6 +18,7 @@ import { api, Node } from "@/src/api";
 import { DEFAULT_BANNERS } from "@/src/banners";
 import { Header, PrimaryButton } from "@/src/components";
 import { ConfirmSheet } from "@/src/modals";
+import { ShareAppSection } from "@/src/share-app";
 import { usePhotoCapture } from "@/src/use-photo-capture";
 import { colors, font, radius, spacing, type } from "@/src/theme";
 
@@ -178,6 +179,10 @@ export default function Instellingen() {
               </View>
             );
           })}
+        </View>
+
+        <View style={styles.mt}>
+          <ShareAppSection />
         </View>
 
         {/* Backup */}

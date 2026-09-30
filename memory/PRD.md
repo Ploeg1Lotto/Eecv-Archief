@@ -10,3 +10,5 @@ Bestaande Expo/React Native (expo-router) app van GitHub (Ploeg1Lotto/Eecv-Archi
 - Alert.alert -> browser alert/confirm op web; desktop gecentreerd max 760px
 ## Backlog
 - P2: RN-web shadow-deprecation warnings opruimen
+- 2026-06: Instellingen -> "App delen" (Web Share API, WhatsApp, Mail, kopieer link) + installatie-uitleg iPhone/Android (src/share-app.tsx)
+- Hosting: netlify.toml (root) + frontend/vercel.json + public/_redirects
