@@ -13,3 +13,4 @@ Bestaande Expo/React Native (expo-router) app van GitHub (Ploeg1Lotto/Eecv-Archi
 - 2026-06: Instellingen -> "App delen" (Web Share API, WhatsApp, Mail, kopieer link) + installatie-uitleg iPhone/Android (src/share-app.tsx)
 - Hosting: netlify.toml (root) + frontend/vercel.json + public/_redirects
 - 2026-06: App-icoon (EECV-logo, strak hertekend) + web manifest / apple-touch-icon / titel 'Eecv Archief' (public/index.html, public/manifest.json)
+- 2026-06: Icoon vervangen door memoblok + EECV-logo op oranje (#EA580C); preview /app/memory/icon_preview_v2.png
